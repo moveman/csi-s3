@@ -59,7 +59,8 @@ func (goofys *goofysMounter) Mount(source string, target string) error {
 			"allow_other": "",
 		},
 		Backend: &common.S3Config{
-			Region: goofys.region,
+			Region:       goofys.region,
+			StorageClass: "STANDARD",
 		},
 	}
 
