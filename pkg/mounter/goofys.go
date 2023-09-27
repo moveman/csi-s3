@@ -59,12 +59,14 @@ func (goofys *goofysMounter) Mount(source string, target string) error {
 			"allow_other": "",
 		},
 		Backend: &common.S3Config{
-			Region: goofys.region,
+			Region:       goofys.region,
+			StorageClass: "STANDARD",
 		},
 	}
-
-	os.Setenv("AWS_ACCESS_KEY_ID", goofys.accessKeyID)
-	os.Setenv("AWS_SECRET_ACCESS_KEY", goofys.secretAccessKey)
+	if goofys.accessKeyID != "" && goofys.secretAccessKey != "" {
+		os.Setenv("AWS_ACCESS_KEY_ID", goofys.accessKeyID)
+		os.Setenv("AWS_SECRET_ACCESS_KEY", goofys.secretAccessKey)
+	}
 	fullPath := fmt.Sprintf("%s:%s", goofys.meta.BucketName, path.Join(goofys.meta.Prefix, goofys.meta.FSPath))
 
 	_, _, err := goofysApi.Mount(context.Background(), fullPath, goofysCfg)
