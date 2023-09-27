@@ -56,7 +56,7 @@ func NewClient(cfg *Config) (*s3Client, error) {
 		endpoint = u.Hostname() + ":" + u.Port()
 	}
 	var credential *credentials.Credentials
-	if client.Config.AccessKeyID == "" && client.Config.SecretAccessKey == "" {
+	if client.Config.AccessKeyID == "" || client.Config.SecretAccessKey == "" {
 		credential = credentials.NewIAM("")
 	} else {
 		credential = credentials.NewStaticV4(client.Config.AccessKeyID, client.Config.SecretAccessKey, client.Config.Region)
